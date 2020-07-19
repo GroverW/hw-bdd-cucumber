@@ -10,7 +10,6 @@ Given /the following movies exist/ do |movies_table|
       :release_date => DateTime.parse(movie[:release_date])
     })
   end
-  # fail "Unimplemented"
 end
 
 Then /(.*) seed movies should exist/ do | n_seeds |
