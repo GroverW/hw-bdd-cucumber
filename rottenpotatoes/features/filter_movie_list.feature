@@ -1,5 +1,5 @@
 Feature: display list of movies filtered by MPAA rating
- 
+
   As a concerned parent
   So that I can quickly browse movies appropriate for my family
   I want to see movies matching only certain MPAA ratings
@@ -23,6 +23,24 @@ Background: movies have been added to database
   Then 10 seed movies should exist
 
 Scenario: restrict to movies with 'PG' or 'R' ratings
+  When I check the following ratings: PG, R
+  And I uncheck the following ratings: G, PG-13, NC-17
+  And I press Refresh
+  Then I should see the following movies:
+    | title                   |
+    | The Terminator          |
+    | When Harry Met Sally    |
+    | Amelie                  |
+    | The Incredibles         |
+    | Raiders of the Lost Ark |
+  And I should not see the following movies:
+    | title                   |
+    | Aladdin                 |
+    | The Help                |
+    | Chocolat                |
+    | 2001: A Space Odyssey   |
+    | Chicken Run             |
+
   # enter step(s) to check the 'PG' and 'R' checkboxes
   # enter step(s) to uncheck all other checkboxes
   # enter step to "submit" the search form on the homepage
