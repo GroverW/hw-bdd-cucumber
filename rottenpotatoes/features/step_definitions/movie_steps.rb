@@ -71,6 +71,33 @@ Then /I should not see the following movies:/ do |movie_titles|
   end
 end
 
+Then /I should see movies sorted alphabetically/ do
+  title_css_search = 'table#movies thead tr th'
+  query = 'Movie Title'
+
+  index = page.all(title_css_search).find_index { |col| col.text == query }
+
+  page.all('table#movies tbody tr').each_cons(2) do |row_a, row_b|
+    element_a = row_a.all('td')[index].text
+    element_b = row_b.all('td')[index].text
+
+    expect(element_a).to be <= (element_b)
+  end
+end
+
+Then /I should see movies sorted in increasing order of release date/ do
+  title_css_search = 'table#movies thead tr th'
+  query = 'Release Date'
+
+  index = page.all(title_css_search).find_index { |col| col.text == query }
+
+  page.all('table#movies tbody tr').each_cons(2) do |row_a, row_b|
+    element_a = row_a.all('td')[index].text
+    element_b = row_b.all('td')[index].text
+
+    expect(DateTime.parse(element_a)).to be <= (DateTime.parse(element_b))
+  end
+end
 
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
