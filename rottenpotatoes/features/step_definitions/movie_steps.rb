@@ -35,11 +35,19 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
   rating_list.split(', ').each do |rating|
     r = "ratings[#{rating}]"
-    uncheck == "uncheck" ? uncheck(r) : check(r)
+    uncheck == "un" ? uncheck(r) : check(r)
+  end
+end
+
+When /I (un)?check all the ratings/ do |uncheck|
+  Movie.all_ratings.each do |rating|
+    r = "ratings[#{rating}]"
+    uncheck == "un" ? uncheck(r) : check(r)
   end
 end
 
 When /^(?:|I )press ([^"]*)$/ do |button|
+  # puts page.body
   click_button(button)
 end
 
@@ -66,5 +74,7 @@ end
 
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
-  fail "Unimplemented"
+  within('table#movies tbody') do
+    expect(page).to have_xpath(".//tr", :count => Movie.count)
+  end
 end
